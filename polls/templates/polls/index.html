@@ -1,0 +1,82 @@
+{% if latest_question_list %}
+    <ul>
+    {% for question in latest_question_list %}
+        <div>
+            <form method="post" onsubmit="return castVote(this)" id="vote-form{{question.id}}">
+                {% csrf_token %}
+                <h3>{{question.question_text}}</h3>
+                <div>
+                    <ul>
+                    {% for choice in question.choice_set.all %}
+                        <li id="{{question.id}}">
+                            <input type="radio" name="choice" id="{{question.id}}choice{{ forloop.counter }}" value="{{ choice.id }}">
+                            <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
+                        </li>
+                    {% endfor %}
+                    </ul>
+                    <input type="submit" value="Vote">
+                </div>
+            </form>
+        </div>
+        <div style="display: none" id="vote-result{{question.id}}">
+            <h3>{{question.question_text}}</h3>
+            <ul id="result-list{{question.id}}"></ul>
+
+        </div>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No polls are available.</p>
+{% endif %}
+
+<script src='https://cdnjs.cloudflare.com/ajax/libs/axios/0.9.1/axios.js'></script>
+<script>
+    function castVote(formObj) {
+        event.preventDefault()
+    
+        axiosSetup(formObj)
+    }
+
+    function axiosSetup(formObj) {
+        // for geting the input value to pass at server for collecting there value and save in db
+        let data = new FormData()
+
+        selectedChoice = formObj.querySelector('input[name="choice"]:checked');
+    
+
+        if (selectedChoice != null) {
+            selectedChoice.checked = false;
+            questionID = selectedChoice.parentElement.id
+
+            selectedChoice  = selectedChoice == null ? -1 : selectedChoice.value
+            
+            data.append("choice", selectedChoice);
+            data.append('csrfmiddlewaretoken', '{{csrf_token}}') // setup csrf_token as a post request
+
+            // ....axios post request
+            
+            let url = "{% url 'polls:vote' question_id=12345 %}".replace(/12345/, questionID);
+            axios.post(url, data)
+                .then(res => { 
+                   
+                    document.getElementById("vote-form"+questionID).style.display = "none"
+                    document.getElementById("vote-result"+questionID).style.display = "block"
+                    displayVotingResult(res.data.choices, questionID)
+                })
+                .catch(e => {
+                    location.href="/polls/{{question.id}}/results"
+                   
+                })
+        }
+    }
+
+    function displayVotingResult(questionChoices, questionID) {
+        let resultList = document.getElementById("result-list"+questionID);
+        for(let i = 0; i < questionChoices.length; i++) {
+            entry = document.createElement('li');
+            entry.classList.add("list-group-item");
+            entry.appendChild(document.createTextNode(questionChoices[i].choice_text + ' -- ' + questionChoices[i].votes ));
+            resultList.appendChild(entry);
+        }
+    }
+</script>

@@ -1,0 +1,47 @@
+[
+    {
+        "pk": 1, 
+        "model": "polls.Choice", 
+        "fields": {
+            "votes": 0, 
+            "question": 1, 
+            "choice_text": "Harry Potter"
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "polls.Choice", 
+        "fields": {
+            "votes": 0, 
+            "question": 1, 
+            "choice_text": "Avengers"
+        }
+    },
+    {
+        "pk": 3, 
+        "model": "polls.Choice", 
+        "fields": {
+            "votes": 0, 
+            "question": 1, 
+            "choice_text": "Spirited Away"
+        }
+    },
+    {
+        "pk": 4, 
+        "model": "polls.Choice", 
+        "fields": {
+            "votes": 0, 
+            "question": 2, 
+            "choice_text": "Python"
+        }
+    },
+    {
+        "pk": 5, 
+        "model": "polls.Choice", 
+        "fields": {
+            "votes": 0, 
+            "question": 2, 
+            "choice_text": "Ruby"
+        }
+    }
+]

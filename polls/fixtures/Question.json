@@ -1,0 +1,18 @@
+[
+  {
+    "model": "polls.question",
+    "pk": 1,
+    "fields": {
+      "question_text": "What is your favorite movie?",
+      "pub_date": "2022-03-16T17:41:28+00:00"
+    }
+  },
+  {
+    "model": "polls.question",
+    "pk": 2,
+    "fields": {
+      "question_text": "What is your favorite programming language?",
+      "pub_date": "2021-03-16T17:41:28+00:00"
+    }
+  }
+]
